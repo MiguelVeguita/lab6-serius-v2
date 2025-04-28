@@ -12,14 +12,15 @@ public class PhotonConnectionTest : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = MasterManager.GameSettings.NickName;
         PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;
 
-        // Añadir el índice del personaje a las propiedades del jugador
+        PhotonNetwork.AutomaticallySyncScene = true;
+
         var playerProps = new ExitGames.Client.Photon.Hashtable();
         playerProps.Add("characterIndex", MasterManager.GameSettings.SelectedCharacterIndex);
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
 
         PhotonNetwork.ConnectUsingSettings();
-    }
 
+    }
     public override void OnConnectedToMaster()
     {
         Debug.Log("Conectado al servidor de Photon.");
@@ -38,4 +39,6 @@ public class PhotonConnectionTest : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("Desconectado de Photon. Motivo: {cause}");
     }
+   
+
 }
