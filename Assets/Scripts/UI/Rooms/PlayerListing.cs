@@ -5,8 +5,7 @@ using Photon.Realtime;
 
 public class PlayerListing : MonoBehaviour
 {
-    [SerializeField]
-    private Text _text;
+    [SerializeField] private Text _text;
     [SerializeField] private Text playerNameText;
     [SerializeField] private Image characterImage;
     [SerializeField] private Sprite[] characterSprites;
@@ -24,4 +23,5 @@ public class PlayerListing : MonoBehaviour
             characterImage.sprite = characterSprites[charIndex];
         }
     }
+   
 }

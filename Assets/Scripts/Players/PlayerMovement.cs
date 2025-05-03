@@ -1,5 +1,8 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
+using Photon.Realtime;
+using TMPro;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviourPunCallbacks
@@ -19,6 +22,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float pitch = 0f;
     private Vector3 velocity;
 
+    [SerializeField] private TMP_Text nickname;
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -26,27 +30,48 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
     void Start()
     {
-       /* if (!photonView.IsMine)
+        if (!photonView.IsMine)
         {
             // Desactiva la cámara y el audio listener de los demás
             var cam = GetComponentInChildren<Camera>();
             if (cam) cam.gameObject.SetActive(false);
             return;
-        }*/
+        }
 
         // Asegúrate de que la cámara local siga a este transform
         if (cameraTransform == null)
             cameraTransform = Camera.main.transform;
 
+        if (nickname != null)
+        {
+            nickname.text = photonView.Owner.NickName; // Usa el nombre de Photon
+            nickname.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("PlayerMovement: No hay referencia al TMP_Text del nickname.");
+        }
 
+        if (photonView.IsMine)
+        {
+            // Envía el nombre a todos los jugadores
+            photonView.RPC("UpdateNickname", RpcTarget.AllBuffered, PhotonNetwork.NickName);
+        }
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    [PunRPC]
+    void UpdateNickname(string name)
+    {
+        nickname.text = name;
+        nickname.gameObject.SetActive(true);
+    }
+
     void Update()
     {
-       // if (!photonView.IsMine) return;
-
+        // if (!photonView.IsMine) return;
+        
         HandleCameraRotation();
         HandleMovement();
     }

@@ -3,11 +3,13 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform _content;
     [SerializeField] private PlayerListing _playerListing;
+
 
     private List<PlayerListing> _listings = new List<PlayerListing>();
     private RoomsCanvases _roomsCanvases;
